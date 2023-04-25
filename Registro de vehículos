@@ -1,0 +1,46 @@
+import java.util.Scanner;
+
+public class RegistroVehiculos {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Bienvenido al programa de registro de vehículos.");
+
+        
+        System.out.print("Por favor ingrese el modelo del vehículo: ");
+        String modelo = sc.nextLine().trim();
+        while (modelo.isEmpty()) {
+            System.out.print("El modelo no puede estar vacío. Por favor ingrese un valor válido: ");
+            modelo = sc.nextLine().trim();
+        }
+
+        
+        System.out.print("Por favor ingrese el cilindraje del vehículo: ");
+        int cilindraje = 0;
+        while (cilindraje <= 0) {
+            try {
+                cilindraje = sc.nextInt();
+                if (cilindraje <= 0) {
+                    System.out.print("El cilindraje debe ser un valor numérico positivo. Por favor ingrese un valor válido: ");
+                }
+            } catch (Exception e) {
+                System.out.print("El cilindraje debe ser un valor numérico positivo. Por favor ingrese un valor válido: ");
+                sc.nextLine(); 
+            }
+        }
+        sc.nextLine(); 
+
+        
+        System.out.print("Por favor ingrese la marca del vehículo: ");
+        String marca = sc.nextLine().trim();
+        while (marca.isEmpty()) {
+            System.out.print("La marca no puede estar vacía. Por favor ingrese un valor válido: ");
+            marca = sc.nextLine().trim();
+        }
+
+        
+        System.out.println("Gracias por registrar su vehículo. Los detalles ingresados son los siguientes:");
+        System.out.println("Modelo: " + modelo);
+        System.out.println("Cilindraje: " + cilindraje);
+        System.out.println("Marca: " + marca);
+    }
+}
