@@ -1,0 +1,43 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Scanner;
+
+public class EstadoTrafico {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Bienvenido al programa de estado de tráfico.");
+
+        
+        System.out.print("Por favor ingrese su ubicación (ciudad, país): ");
+        String ubicacion = sc.nextLine().trim().replace(' ', '+');
+
+        
+        System.out.print("Por favor ingrese su clave de API de Google Maps Traffic: ");
+        String apiKey = sc.nextLine().trim();
+
+        
+        try {
+            URL url = new URL("https://maps.googleapis.com/maps/api/directions/json?origin=" + ubicacion +
+                    "&destination=" + ubicacion + "&key=" + apiKey + "&departure_time=now&traffic_model=best_guess");
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("Content-Type", "application/json");
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            
+            String traffic = response.toString().contains("traffic_speed_in_meters_per_second") ? "Congestionado" : "Fluido";
+            System.out.println("El tráfico en el sector de " + ubicacion + " está: " + traffic);
+        } catch (Exception e) {
+            System.out.println("Ha ocurrido un error al obtener el estado del tráfico. Detalles: " + e.getMessage());
+        }
+    }
+}
