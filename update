@@ -1,0 +1,53 @@
+public class MantenerDatosActualizados extends Usuario {
+
+    public static void main(String[] args) {
+        Connection connection = null;
+        Statement statement = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/empresa", "usuario", "contraseña");
+
+            
+            preparedStatement = connection.prepareStatement("INSERT INTO cliente(nombre, telefono, correo, vehiculo_marca, vehiculo_modelo, vehiculo_cilindraje) VALUES (?, ?, ?, ?, ?, ?)");
+            preparedStatement.setString(1, "Juan Perez");
+            preparedStatement.setString(2, "555-1234");
+            preparedStatement.setString(3, "juan.perez@ejemplo.com");
+            preparedStatement.setString(4, "Toyota");
+            preparedStatement.setString(5, "Corolla");
+            preparedStatement.setInt(6, 2000);
+            preparedStatement.executeUpdate();
+
+            System.out.println("Se ha insertado un nuevo cliente en la base de datos.");
+
+            
+            preparedStatement = connection.prepareStatement("UPDATE cliente SET telefono = ?, correo = ?, vehiculo_cilindraje = ? WHERE nombre = ?");
+            preparedStatement.setString(1, "555-5678");
+            preparedStatement.setString(2, "juan.perez@nuevo-ejemplo.com");
+            preparedStatement.setInt(3, 2500);
+            preparedStatement.setString(4, "Juan Perez");
+            preparedStatement.executeUpdate();
+
+            System.out.println("Se han actualizado los datos del cliente en la base de datos.");
+
+            
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT * FROM cliente");
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String nombre = resultSet.getString("nombre");
+                String telefono = resultSet.getString("telefono");
+                String correo = resultSet.getString("correo");
+                String vehiculo_marca = resultSet.getString("vehiculo_marca");
+                String vehiculo_modelo = resultSet.getString("vehiculo_modelo");
+                int vehiculo_cilindraje = resultSet.getInt("vehiculo_cilindraje");
+
+                System.out.println("ID: " + id);
+                System.out.println("Nombre: " + nombre);
+                System.out.println("Teléfono: " + telefono);
+                System.out.println("Correo: " + correo);
+                System.out.println("Marca del vehiculo:"+ vehiculo)
+            }
